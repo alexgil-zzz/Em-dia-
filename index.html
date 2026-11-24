@@ -9,9 +9,10 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="em dia.">
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" href="icons/icon-192.png">
-<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script src="local.js"></script>
+<script src="exercicios.js"></script>
 
 <title>em dia.</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -662,7 +663,7 @@ const CATALOGO = [{"id": "001", "nome": "Agachamento Livre", "grupo": "Pernas e 
   const porCod = {}; Object.entries(MAPA).forEach(([id, cod]) => porCod[cod] = antigos.find(o => o.id === id));
   CATALOGO.forEach(c => { const o = porCod[c.id];
     EXS.push({ id: o ? o.id : "e" + c.id, cod: c.id, nome: c.nome, grupo: c.grupo, equip: c.equipamento, musc: c.musculoPrincipal + (c.musculosSecundarios ? ", " + c.musculosSecundarios : ""),
-      principal: c.musculoPrincipal, secundarios: c.musculosSecundarios, mus: c.mus, nivel: c.nivel, local: c.local, calistenia: c.calistenia, tipo: c.tipo, img: c.imagem,
+      principal: c.musculoPrincipal, secundarios: c.musculosSecundarios, mus: c.mus, nivel: c.nivel, local: c.local, calistenia: c.calistenia, tipo: c.tipo, img: (window.EMDIA_IMGS && window.EMDIA_IMGS[c.id]) || c.imagem,
       passos: o ? o.passos : c.passos, dicas: o ? o.dicas : [], A: o && o.A, B: o && o.B, nomeAntigo: o && o.nome }); });
   antigos.filter(o => !Object.keys(MAPA).includes(o.id)).forEach(o => EXS.push({ ...o, grupo: GRUPO_ANT[o.id] || o.grupo, principal: o.musc, local: "academia", nivel: "Iniciante", tipo: "Musculação", img: null }));
 })();
