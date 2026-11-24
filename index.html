@@ -333,6 +333,32 @@ input[type=range]{width:100%}
 .btn.danger{color:var(--bad);border-color:var(--bad-2)}
 @media (display-mode: standalone){ body{padding-top:env(safe-area-inset-top)} }
 @media (max-width:640px){ .conta-acoes{width:100%;padding-left:46px} #offPill{bottom:calc(84px + env(safe-area-inset-bottom));font-size:12px} }
+
+/* pesquisa com IA */
+.ia-wrap{max-width:860px}
+.ia-chat{display:flex;flex-direction:column;gap:12px;padding-bottom:8px}
+.ia-vazio{text-align:center;padding:26px 10px 10px} .ia-vazio .serif{font-size:26px;color:var(--plum);margin:0 0 14px}
+.ia-sug{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.ia-sug .chip{background:var(--card);border:1px solid var(--line);border-radius:99px;padding:8px 14px;font:inherit;font-size:14px;color:var(--plum-2);cursor:pointer}
+.ia-sug .chip:hover{background:var(--lilac-2)}
+.ia-q{align-self:flex-end;max-width:82%;background:var(--plum);color:#fff;border-radius:18px 18px 4px 18px;padding:10px 15px;white-space:pre-wrap;scroll-margin-top:12px}
+.ia-r{align-self:flex-start;max-width:96%;background:var(--card);border:1px solid var(--line);border-radius:18px 18px 18px 4px;padding:14px 18px}
+.ia-md p{margin:0 0 8px} .ia-md h4{font-family:"Cormorant Garamond",serif;font-size:20px;color:var(--plum);margin:12px 0 4px} .ia-md ul,.ia-md ol{margin:0 0 8px;padding-left:20px} .ia-md li{margin:2px 0}
+.ia-md code{background:var(--beige-2);padding:1px 5px;border-radius:5px;font-size:.92em} .ia-md a{color:var(--plum-2)}
+.ia-fontes{display:flex;flex-direction:column;gap:3px;margin-top:10px;padding-top:10px;border-top:1px dashed var(--line);font-size:13px}
+.ia-fontes span{font-weight:500;color:var(--muted)} .ia-fontes a{color:var(--plum-2);text-decoration:none;overflow:hidden;text-overflow:ellipsis;white-space:nowrap} .ia-fontes a:hover{text-decoration:underline}
+.ia-acoes{display:flex;gap:6px;align-items:center;margin-top:10px} .ia-acoes .hint{margin-left:auto;font-size:12px}
+.ia-pensando{color:var(--muted);font-size:14px;display:flex;gap:5px;align-items:center}
+.ia-pensando span{width:7px;height:7px;border-radius:50%;background:var(--lilac);animation:iaPulso 1s infinite ease-in-out}
+.ia-pensando span:nth-child(2){animation-delay:.15s} .ia-pensando span:nth-child(3){animation-delay:.3s;margin-right:6px}
+@keyframes iaPulso{0%,100%{opacity:.3;transform:translateY(0)}50%{opacity:1;transform:translateY(-3px)}}
+.ia-form{position:sticky;bottom:12px;display:flex;gap:8px;align-items:flex-end;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:8px;box-shadow:0 10px 30px rgba(74,35,64,.08);margin-top:12px}
+.ia-form textarea{flex:1;border:0;background:transparent;resize:none;font:inherit;font-size:15px;padding:8px 10px;color:var(--ink);outline:none;min-height:44px;max-height:160px}
+.ia-form .btn{border-radius:14px;padding:11px 14px} .ia-form .btn svg{width:18px;height:18px;margin:0}
+.ia-aviso{font-size:12px;margin:8px 4px 0}
+.lupa{animation:lupa 3.2s ease-in-out infinite} @keyframes lupa{0%,100%{transform:rotate(0)}50%{transform:rotate(-10deg) translate(-3px,2px)}}
+@media (prefers-reduced-motion:reduce){.lupa,.ia-pensando span{animation:none}}
+@media (max-width:860px){ .ia-form{bottom:calc(76px + env(safe-area-inset-bottom))} .ia-q{max-width:90%} .ia-r{padding:12px 14px} }
 </style>
 </head>
 <body>
@@ -679,7 +705,7 @@ const I = {
   list:'<path d="M9 6h11M9 12h11M9 18h11"/><path d="m3.5 6 1.2 1.2L7 5M3.5 12l1.2 1.2L7 11M3.5 18l1.2 1.2L7 17"/>',
   plane:'<path d="M10.5 13.5 3 11l1.5-1.5 8 .5 4-4a2 2 0 0 1 3 3l-4 4 .5 8L14.5 22 12 14.5"/><path d="m6 17-2 2"/>',
   bag:'<path d="M5 8h14l-1 12H6L5 8Z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/>',
-  plus:'<path d="M12 5v14M5 12h14"/>',download:'<path d="M12 4v11M7 10l5 5 5-5M5 19h14"/>',
+  plus:'<path d="M12 5v14M5 12h14"/>',sparkle:'<path d="M12 3l1.8 4.9L19 9.7l-5.2 1.8L12 16.5l-1.8-5L5 9.7l5.2-1.8z"/><path d="M18.5 15l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8z"/>',send:'<path d="M4 12l16-8-6 16-2.5-6.5z"/><path d="M11.5 13.5L20 4"/>',download:'<path d="M12 4v11M7 10l5 5 5-5M5 19h14"/>',
   minus:'<path d="M5 12h14"/>',
   edit:'<path d="M4 20h4L19 9l-4-4L4 16v4Z"/><path d="m13.5 6.5 4 4"/>',
   trash:'<path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/>',
@@ -814,6 +840,15 @@ const ARTE = (() => {
       <path d="M68 32 q-4 -12 -10 -14 M72 32 q4 -12 10 -14" fill="none" ${st}/>
     </g></svg>`,
   };
+  A.ia = `<svg viewBox="0 0 140 120" class="anim" aria-hidden="true"><g class="flutua">
+      <path d="M40 98 q-22 -4 -20 -26 q10 14 26 12z" fill="#e9895a" ${st}/>
+      <ellipse cx="62" cy="86" rx="24" ry="20" fill="#f0a06c" ${st}/><ellipse cx="62" cy="92" rx="13" ry="11" fill="#fbeee2"/>
+      <path d="M38 40 l-4 -24 l20 14z M86 40 l4 -24 l-20 14z" fill="#f0a06c" ${st}/><path d="M39 36 l-2 -12 l10 8z M85 36 l2 -12 l-10 8z" fill="#4a2340" opacity=".55"/>
+      <path d="M32 48 q30 -26 60 0 q2 22 -30 30 q-32 -8 -30 -30z" fill="#f0a06c" ${st}/>
+      <path d="M44 62 q18 22 36 0 q-4 14 -18 18 q-14 -4 -18 -18z" fill="#fbeee2"/>
+      ${olhos(52, 72, 54)}${bochecha(44, 62)}${bochecha(80, 62)}<ellipse cx="62" cy="66" rx="3.4" ry="2.4" fill="#3d2a38"/>
+      <g class="lupa" style="transform-origin:100px 80px"><path d="M84 92 l-8 10" stroke="#8a5a3c" stroke-width="5" stroke-linecap="round"/><circle cx="100" cy="76" r="17" fill="#dcecf3" fill-opacity=".75" stroke="#4a2340" stroke-width="3.2"/><path d="M92 69 q5 -5 11 -4" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round"/></g>
+    </g></svg>`;
   A.cofrinhos = A.cofres;
   return t => A[t] || "";
 })();
@@ -894,7 +929,7 @@ function erro(e) { console.error(e); toast(e && e.code === "quota_exceeded" ? "O
 const blobUrl = id => id ? "/_blob/" + encodeURIComponent(id) : "";
 
 // =================== dados ===================
-const COLS = ["lanc","rec","cartoes","faturas","cofres","desejos","fichas","sessoes","medidas","pend","proj","dias","dores","ciclos","alimentos","imgs"];
+const COLS = ["ia","lanc","rec","cartoes","faturas","cofres","desejos","fichas","sessoes","medidas","pend","proj","dias","dores","ciclos","alimentos","imgs"];
 const D = { prefs: {} }; COLS.forEach(c => D[c] = []);
 const READY = new Set();
 const S = { db: null, user: null, assets: null, uid: null, base: null, tela: "inicio", sub: {}, mes: mesAtual(), fichaDia: null, projAberto: null, filtroLanc: "", gerados: new Set() };
@@ -1036,9 +1071,15 @@ async function gerarRecorrentes() {
 }
 
 // =================== layout ===================
-const MENU = [["inicio","Início","home","Início"],["financas","Finanças","card","Finanças"],["cofres","Cofrinhos","piggy","Cofres"],["treinos","Treinos","dumbbell","Treinos"],["saude","Saúde","heart","Saúde"],["pend","Pendências","list","Pend."],["proj","Planos & Projetos","plane","Planos"],["conta","Minha conta","user","Conta"]];
+const MENU = [["inicio","Início","home","Início"],["financas","Finanças","card","Finanças"],["cofres","Cofrinhos","piggy","Cofres"],["treinos","Treinos","dumbbell","Treinos"],["saude","Saúde","heart","Saúde"],["pend","Pendências","list","Pend."],["proj","Planos & Projetos","plane","Planos"],["ia","Pesquisa IA","sparkle","IA"],["conta","Minha conta","user","Conta"]].filter(m => m[0] !== "ia" || LOCAL);
 function render() {
   if (!S.base) return;
+  const foco = document.activeElement && document.activeElement.id && $("#app").contains(document.activeElement) ? document.activeElement : null;
+  const fId = foco && foco.id, fIni = foco && foco.selectionStart, fFim = foco && foco.selectionEnd;
+  renderTela();
+  if (fId) { const el = document.getElementById(fId); if (el && el !== document.activeElement && !el.disabled) { try { el.focus({ preventScroll: true }); if (fIni != null && el.setSelectionRange) el.setSelectionRange(fIni, fFim); } catch {} } }
+}
+function renderTela() {
   if (READY.has("prefs") && !LOCAL) {
     if (!D.prefs.login || S.redefinir) { if (!$("#app").querySelector('[data-form="criarAcesso"]') || S.redefinirMudou) { S.redefinirMudou = false; $("#app").innerHTML = telaCriarAcesso(!!(D.prefs.login && S.redefinir)); } return; }
     if (!lerSessao()) { if (!$("#app").querySelector('[data-form="login"]')) $("#app").innerHTML = telaLogin(); return; }
@@ -2111,7 +2152,7 @@ async function entrar() {
 const fmtDH = ms => ms ? new Date(ms).toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit", year: "2-digit" }) + " " + new Date(ms).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }) : "—";
 const msgErro = e => (e && e.message) || "Não foi possível falar com a nuvem.";
 async function carregarStatusLocal() {
-  try { S.lcStatus = await EMDIA.api("status"); S.lcSemNet = false; } catch (e) { S.lcStatus = null; S.lcSemNet = true; }
+  try { S.lcStatus = await EMDIA.api("status"); S.lcSemNet = false; S.lcErroNuvem = ""; } catch (e) { S.lcStatus = null; S.lcSemNet = true; S.lcErroNuvem = e.offline ? "" : msgErro(e); }
   if (!EMDIA.lerSessao()) $("#app").innerHTML = telaContaLocal();
 }
 function telaContaLocal() {
@@ -2120,8 +2161,8 @@ function telaContaLocal() {
   const st = S.lcStatus;
   if (!st && !S.lcSemNet) return `<div class="entrada"><div class="ent-card">${topo}<p style="color:var(--muted);margin:18px 0 0">carregando…</p></div></div>`;
   if (!st) return `<div class="entrada"><div class="ent-card">${topo}
-    <h2 class="serif" style="font-size:26px;margin:8px 0 6px;color:var(--plum)">Sem internet agora</h2>
-    <p style="margin:0 0 16px;color:var(--muted)">Para entrar pela primeira vez neste aparelho é preciso estar conectada. Depois disso, o em dia. abre e salva mesmo offline.</p>
+    <h2 class="serif" style="font-size:26px;margin:8px 0 6px;color:var(--plum)">${S.lcErroNuvem ? "Não conectou à nuvem" : "Sem internet agora"}</h2>
+    <p style="margin:0 0 16px;color:var(--muted)">${S.lcErroNuvem ? esc(S.lcErroNuvem) : "Para entrar pela primeira vez neste aparelho é preciso estar conectada. Depois disso, o em dia. abre e salva mesmo offline."}</p>
     <button class="btn ent-btn" data-act="lcTentar">Tentar de novo</button></div></div>`;
   const modo = !st.temMestre ? "mestre" : (S.lcModo || "entrar");
   if (modo === "mestre" || modo === "nova") return `<div class="entrada"><div class="ent-card">${topo}
@@ -2313,6 +2354,57 @@ if (LOCAL) {
   const _fechar = fechar; fechar = function () { _fechar(); if (S.depoisCodigo) { const f = S.depoisCodigo; S.depoisCodigo = null; f(); } };
 }
 
+// =================== PESQUISA COM IA ===================
+function md(txt) {
+  const linhas = esc(String(txt || "")).split(/\r?\n/); let out = "", lista = null;
+  const inl = t => t.replace(/\*\*(.+?)\*\*/g, "<b>$1</b>").replace(/(^|[^*])\*(?!\s)(.+?)\*(?!\*)/g, "$1<i>$2</i>").replace(/`([^`]+)`/g, "<code>$1</code>")
+    .replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+  const fecha = () => { if (lista) { out += `</${lista}>`; lista = null; } };
+  for (const l of linhas) {
+    let m;
+    if ((m = l.match(/^\s*#{1,6}\s+(.*)/))) { fecha(); out += `<h4>${inl(m[1])}</h4>`; }
+    else if ((m = l.match(/^\s*[-*•]\s+(.*)/))) { if (lista !== "ul") { fecha(); out += "<ul>"; lista = "ul"; } out += `<li>${inl(m[1])}</li>`; }
+    else if ((m = l.match(/^\s*\d+[.)]\s+(.*)/))) { if (lista !== "ol") { fecha(); out += "<ol>"; lista = "ol"; } out += `<li>${inl(m[1])}</li>`; }
+    else if (!l.trim()) fecha();
+    else { fecha(); out += `<p>${inl(l)}</p>`; }
+  }
+  fecha(); return out;
+}
+const IA_SUG = ["Receita rápida e saudável com frango e batata-doce", "Como montar uma reserva de emergência do zero", "Alongamentos para aliviar dor nas costas", "Roteiro de 3 dias em Gramado", "Quanto de água devo beber por dia?", "Como organizar a rotina com pouco tempo"];
+const iaLista = () => (D.ia || []).slice().sort((a, b) => (a.criadoEm || 0) - (b.criadoEm || 0));
+VIEWS.ia = () => {
+  const L = iaLista(); const on = navigator.onLine;
+  return ph("Pesquisa", "Pergunte qualquer coisa: a IA pesquisa na internet e responde com as fontes.", L.length ? `<button class="btn ghost" data-act="iaLimpar">${ic("trash")}Limpar conversa</button>` : "") + `
+  <div class="ia-wrap">
+    <div class="ia-chat" id="iaChat">
+      ${!L.length && !S.iaPend ? `<div class="ia-vazio"><p class="serif">O que você quer saber hoje? ✿</p><div class="ia-sug">${IA_SUG.map(t => `<button class="chip" data-act="iaSug" data-v="${esc(t)}">${esc(t)}</button>`).join("")}</div></div>` : ""}
+      ${L.map(m => `<div class="ia-q">${esc(m.p)}</div>
+        <div class="ia-r"><div class="ia-md">${md(m.r)}</div>
+          ${(m.fontes || []).length ? `<div class="ia-fontes"><span>Fontes</span>${m.fontes.map((f, i) => `<a href="${esc(f.url)}" target="_blank" rel="noopener">${i + 1}. ${esc(f.titulo || "link")}</a>`).join("")}</div>` : ""}
+          <div class="ia-acoes"><button class="btn ghost sm" data-act="iaCopiar" data-id="${esc(m.id)}">Copiar</button><button class="btn ghost sm" data-act="iaApagar" data-id="${esc(m.id)}">Apagar</button><span class="hint">${m.criadoEm ? fmtDH(m.criadoEm) : ""}</span></div></div>`).join("")}
+      ${S.iaPend ? `<div class="ia-q">${esc(S.iaPend)}</div><div class="ia-r ia-pensando"><span></span><span></span><span></span> pesquisando…</div>` : ""}
+    </div>
+    <form class="ia-form" data-form="iaPerguntar">
+      <textarea id="iaTxt" rows="2" maxlength="2000" placeholder="${on ? "Escreva sua pergunta…" : "Sem internet: a pesquisa volta quando conectar"}" ${on && !S.iaPend ? "" : "disabled"}>${esc(S.iaRascunho || "")}</textarea>
+      <button class="btn" type="submit" ${on && !S.iaPend ? "" : "disabled"} aria-label="Enviar">${ic("send")}</button>
+    </form>
+    <p class="hint ia-aviso">As perguntas vão para a IA do Google (Gemini). Evite colocar dados pessoais sensíveis, como documentos e senhas.</p>
+  </div>`;
+};
+function rolarIA() { const c = $("#iaChat"); if (c) setTimeout(() => { const ult = c.querySelector(".ia-q:last-of-type"); if (ult) ult.scrollIntoView({ block: "start", behavior: "smooth" }); }, 30); }
+async function iaPerguntar(txt) {
+  const p = String(txt || val("iaTxt") || "").trim(); if (!p || S.iaPend) return;
+  if (!navigator.onLine) return toast("Sem internet agora. Tente quando conectar.");
+  S.iaPend = p; S.iaRascunho = ""; render(); rolarIA();
+  try {
+    const hist = iaLista().slice(-3).map(m => ({ p: m.p, r: m.r }));
+    const r = await EMDIA.apiConta("perguntar", { pergunta: p, historico: hist });
+    await put("ia", "q" + rid(), { p, r: r.resposta, fontes: r.fontes || [], criadoEm: Date.now() });
+    if (r.restantes <= 5) toast(`Restam ${r.restantes} perguntas hoje`);
+  } catch (e) { S.iaRascunho = p; toast(msgErro(e)); }
+  S.iaPend = null; render(); rolarIA();
+}
+
 // =================== CONTA ===================
 const nomeUsuaria = () => D.prefs.nome || (S.me && S.me.name ? S.me.name.split(" ")[0] : "");
 function telaBoasVindas() {
@@ -2385,6 +2477,10 @@ const ACT = {
   mNovaConta: () => modalNovaContaLocal(),
   mCriarConta: () => criarContaPeloMestre(),
   instalarApp: () => instalarApp(),
+  iaSug: el => iaPerguntar(el.dataset.v),
+  iaCopiar: el => { const m = (D.ia || []).find(x => x.id === el.dataset.id); if (!m) return; try { navigator.clipboard.writeText(m.r); toast("Resposta copiada"); } catch { toast("Não foi possível copiar"); } },
+  iaApagar: el => del("ia", el.dataset.id),
+  iaLimpar: async () => { if (!(await confirmar("Apagar toda a conversa da pesquisa?", "Apagar"))) return; for (const m of D.ia || []) await del("ia", m.id); },
   esqueciSenha: () => { S.redefinir = true; S.redefinirMudou = true; render(); },
   voltarLogin: () => { S.redefinir = false; $("#app").innerHTML = ""; render(); },
   sair: () => sair(),
@@ -2556,13 +2652,13 @@ document.addEventListener("click", e => {
   if (e.target.closest("input,select,label") && el.matches(".cofre,.pcard,.li,.card")) return;
   const fn = ACT[el.dataset.act]; if (fn) { e.preventDefault(); e.stopPropagation(); fn(el, e); }
 });
-document.addEventListener("submit", e => { const f = e.target.closest("[data-form]"); if (!f) return; e.preventDefault(); if (f.dataset.form === "login") entrar(); if (f.dataset.form === "criarAcesso") criarAcesso(); if (f.dataset.form === "lcCriar") lcCriar(); if (f.dataset.form === "lcEntrar") lcEntrar(); if (f.dataset.form === "lcRecuperar") lcRecuperar(); });
+document.addEventListener("submit", e => { const f = e.target.closest("[data-form]"); if (!f) return; e.preventDefault(); if (f.dataset.form === "login") entrar(); if (f.dataset.form === "criarAcesso") criarAcesso(); if (f.dataset.form === "lcCriar") lcCriar(); if (f.dataset.form === "lcEntrar") lcEntrar(); if (f.dataset.form === "lcRecuperar") lcRecuperar(); if (f.dataset.form === "iaPerguntar") iaPerguntar(); });
 document.addEventListener("change", e => { const el = e.target.closest("[data-chg]"); if (el && CHG[el.dataset.chg] && el.dataset.chg !== "exCampo") CHG[el.dataset.chg](el, e); });
-document.addEventListener("input", e => { const el = e.target.closest('[data-chg="exCampo"]'); if (el) CHG.exCampo(el); const fm = e.target.closest('[data-chg="fichaMeta"]'); if (fm) CHG.fichaMeta(fm);
+document.addEventListener("input", e => { if (e.target.id === "iaTxt") S.iaRascunho = e.target.value; const el = e.target.closest('[data-chg="exCampo"]'); if (el) CHG.exCampo(el); const fm = e.target.closest('[data-chg="fichaMeta"]'); if (fm) CHG.fichaMeta(fm);
   if (e.target.id === "dInt") { const l = $("#dIntL"); if (l) l.textContent = e.target.value; }
   if (e.target.id === "comidaBusca") { S.comidaQ = e.target.value; const r = $("#comidaRes"); if (r) r.innerHTML = resultadosComida(); } const q = e.target.closest("#libBusca"); if (q) { S.libQ = q.value; render(); const i2 = $("#libBusca"); if (i2) { i2.focus(); i2.setSelectionRange(i2.value.length, i2.value.length); } }
   const fb = e.target.closest("#fxBusca"); if (fb) { S.fxGrupo = null; document.querySelectorAll('[data-act="fxGrupo"]').forEach(c => c.classList.remove("on")); const r = $("#fxRes"); if (r) { r.innerHTML = fxResultados(fb.value, null); r.style.display = r.innerHTML ? "" : "none"; } } });
-document.addEventListener("keydown", e => { if (e.key === "Enter" && ["novoCl", "orcVal", "lnkU"].includes(e.target.id)) { const b = e.target.closest(".row").querySelector("button"); if (b) b.click(); } if (e.key === "Escape") fechar(); });
+document.addEventListener("keydown", e => { if (e.target.id === "iaTxt" && e.key === "Enter" && !e.shiftKey && !e.isComposing) { e.preventDefault(); iaPerguntar(); return; } if (e.key === "Enter" && ["novoCl", "orcVal", "lnkU"].includes(e.target.id)) { const b = e.target.closest(".row").querySelector("button"); if (b) b.click(); } if (e.key === "Escape") fechar(); });
 $("#mbg").addEventListener("click", e => { if (e.target.id === "mbg") fechar(); });
 document.addEventListener("click", e => { const r = $("#fxRes"); if (r && !e.target.closest("#modal")) r.style.display = "none"; });
 // dica (tooltip) dos gráficos

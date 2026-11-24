@@ -84,6 +84,52 @@ async function apagarTudo(c) {
 }
 async function contarTentativa(u) { const n = await redis(["INCR", K.tent(u)]); if (n === 1) await redis(["EXPIRE", K.tent(u), 300]); return n; }
 
+
+// ---------- IA (Google Gemini, chave grátis do Google AI Studio) ----------
+const LIMITE_IA = +process.env.EMDIA_LIMITE_IA || 40; // perguntas por pessoa por dia
+const SYS_IA = () => `Você é a assistente de pesquisa do app "em dia.". Hoje é ${new Date().toLocaleDateString("pt-BR", { timeZone: "America/Sao_Paulo", weekday: "long", day: "numeric", month: "long", year: "numeric" })}.
+Responda sempre em português do Brasil, de forma clara, acolhedora e organizada: comece pela resposta direta, depois detalhe com títulos curtos (##) e listas quando ajudar. Seja objetiva.
+Quando usar a busca na internet, baseie-se nas fontes encontradas e não invente dados. Se não tiver certeza, diga.
+Em saúde, finanças e questões legais, dê informação geral e sugira procurar um profissional quando fizer sentido.`;
+async function chamarGemini(modelo, contents, comBusca) {
+  const body = { systemInstruction: { parts: [{ text: SYS_IA() }] }, contents, generationConfig: { temperature: 0.6 } };
+  if (comBusca) body.tools = [{ google_search: {} }];
+  const r = await fetch(`${process.env.GEMINI_BASE || "https://generativelanguage.googleapis.com"}/v1beta/models/${modelo}:generateContent`, {
+    method: "POST", headers: { "Content-Type": "application/json", "x-goog-api-key": process.env.GEMINI_API_KEY }, body: JSON.stringify(body),
+  });
+  let j = {}; try { j = await r.json(); } catch {}
+  return { status: r.status, j };
+}
+async function perguntarGemini(contents) {
+  const modelos = [...new Set([process.env.GEMINI_MODEL, "gemini-2.5-flash", "gemini-flash-latest", "gemini-2.0-flash"].filter(Boolean))];
+  let ultimo = null;
+  for (const m of modelos) {
+    for (const busca of [true, false]) {
+      const { status, j } = await chamarGemini(m, contents, busca);
+      if (status === 200) {
+        const cand = (j.candidates || [])[0] || {};
+        const texto = ((cand.content || {}).parts || []).map(x => x.text || "").join("").trim();
+        const vistos = new Set(), fontes = [];
+        for (const g of ((cand.groundingMetadata || {}).groundingChunks || [])) {
+          const w = g.web; if (!w || !w.uri || vistos.has(w.uri)) continue; vistos.add(w.uri);
+          fontes.push({ url: w.uri, titulo: String(w.title || "").slice(0, 120) }); if (fontes.length >= 6) break;
+        }
+        if (!texto) { ultimo = { status: 502, msg: cand.finishReason === "SAFETY" ? "A IA preferiu não responder essa pergunta. Tente escrever de outro jeito." : "A IA não devolveu resposta. Tente de novo." }; break; }
+        return { texto, fontes, modelo: m };
+      }
+      const msg = String(((j.error || {}).message) || "");
+      if (status === 429) throw new Erro(429, "A cota grátis do Gemini acabou por agora. Tente de novo daqui a pouco.");
+      if (status === 400 && /api key|API_KEY/i.test(msg)) throw new Erro(500, "A chave do Gemini (GEMINI_API_KEY) é inválida. Confira na Vercel.");
+      if (status === 403) throw new Erro(500, "A chave do Gemini não tem permissão. Gere outra no Google AI Studio.");
+      ultimo = { status, msg };
+      if (status === 404) break;                 // modelo não existe: tenta o próximo
+      if (!(status === 400 && busca)) break;      // erro sem relação com a busca: tenta o próximo modelo
+    }
+  }
+  console.error("gemini", ultimo);
+  throw new Erro(502, (ultimo && ultimo.status === 502 && ultimo.msg) || "Não foi possível falar com a IA agora. Tente de novo.");
+}
+
 const ACOES = {
   async status() {
     const [m, cfg] = await Promise.all([redis(["GET", K.mestre]), lerConfig()]);
@@ -171,6 +217,22 @@ const ACOES = {
       bytes += s.length; ate = seqs[i];
     }
     return { docs, ate, mais: docs.length < caminhos.length || caminhos.length === MAX_PAG_DOCS };
+  },
+  // ---------- IA ----------
+  async perguntar(b) {
+    const c = await autenticar(b.token);
+    if (!process.env.GEMINI_API_KEY) throw new Erro(500, "A chave do Gemini ainda não foi colocada na Vercel (variável GEMINI_API_KEY).");
+    const pergunta = String(b.pergunta || "").trim().slice(0, 2000);
+    if (!pergunta) throw new Erro(400, "Escreva sua pergunta.");
+    const kDia = P + "ia:" + c.id + ":" + new Date().toISOString().slice(0, 10);
+    const n = await redis(["INCR", kDia]); if (n === 1) await redis(["EXPIRE", kDia, 172800]);
+    if (n > LIMITE_IA) throw new Erro(429, `Você chegou ao limite de ${LIMITE_IA} perguntas por hoje. Amanhã libera de novo.`);
+    const hist = (Array.isArray(b.historico) ? b.historico : []).slice(-3);
+    const contents = [];
+    for (const h of hist) { if (!h || !h.p || !h.r) continue; contents.push({ role: "user", parts: [{ text: String(h.p).slice(0, 2000) }] }, { role: "model", parts: [{ text: String(h.r).slice(0, 4000) }] }); }
+    contents.push({ role: "user", parts: [{ text: pergunta }] });
+    const r = await perguntarGemini(contents);
+    return { resposta: r.texto, fontes: r.fontes, restantes: Math.max(0, LIMITE_IA - n) };
   },
   // ---------- conta mestre ----------
   async mListar(b) {
