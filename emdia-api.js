@@ -181,13 +181,9 @@ const ACOES = {
     return { temMestre: !!m, cadastroAberto: !!cfg.cadastroAberto };
   },
   async criarConta(b) {
-    const temMestre = !!(await redis(["GET", K.mestre]));
-    if (temMestre && !(await lerConfig()).cadastroAberto) throw new Erro(403, "O cadastro está fechado. Peça para a conta mestre criar sua conta.");
-    let mestre = false;
-    if (!temMestre) mestre = !!(await redis(["SET", K.mestre, "reservado", "NX"]));
-    let r;
-    try { r = await novaConta({ ...b, mestre }); } catch (e) { if (mestre) await redis(["DEL", K.mestre]); throw e; }
-    if (mestre) await redis(["SET", K.mestre, r.c.id]);
+    // só existe uma conta mestre (a da dona do app); quem se cadastra pelo app é sempre conta comum
+    if (!(await lerConfig()).cadastroAberto) throw new Erro(403, "O cadastro está fechado. Peça para a conta mestre criar sua conta.");
+    const r = await novaConta({ ...b, mestre: false });
     return { token: await criarSessao(r.c.id), conta: publica(r.c), codigo: r.codigo };
   },
   async entrar(b) {

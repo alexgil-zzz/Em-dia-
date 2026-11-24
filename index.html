@@ -2320,7 +2320,7 @@ function telaContaLocal() {
     <h2 class="serif" style="font-size:26px;margin:8px 0 6px;color:var(--plum)">${S.lcErroNuvem ? "Não conectou à nuvem" : "Sem internet agora"}</h2>
     <p style="margin:0 0 16px;color:var(--muted)">${S.lcErroNuvem ? esc(S.lcErroNuvem) : "Para entrar pela primeira vez neste aparelho é preciso estar conectada. Depois disso, o em dia. abre e salva mesmo offline."}</p>
     <button class="btn ent-btn" data-act="lcTentar">Tentar de novo</button></div></div>`;
-  const modo = !st.temMestre ? "mestre" : (S.lcModo || "entrar");
+  const modo = S.lcModo === "recuperar" ? "recuperar" : (S.lcModo === "nova" && st.cadastroAberto ? "nova" : "entrar"); // a conta mestre já existe e não pode ser criada pelo app
   if (modo === "mestre" || modo === "nova") return `<div class="entrada"><div class="ent-card">${topo}
     <h2 class="serif" style="font-size:27px;margin:8px 0 6px;color:var(--plum)">${modo === "mestre" ? "Criar a conta mestre ✿" : "Criar minha conta ✿"}</h2>
     <p style="margin:0 0 16px;color:var(--muted)">${modo === "mestre" ? "Esta é a primeira conta do em dia.: ela vira a <b>conta mestre</b>, que cria e cuida das outras contas." : "Cada pessoa tem a própria conta, com dados separados e protegidos por senha."}</p>
