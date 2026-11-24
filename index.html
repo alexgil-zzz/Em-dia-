@@ -359,6 +359,45 @@ input[type=range]{width:100%}
 .lupa{animation:lupa 3.2s ease-in-out infinite} @keyframes lupa{0%,100%{transform:rotate(0)}50%{transform:rotate(-10deg) translate(-3px,2px)}}
 @media (prefers-reduced-motion:reduce){.lupa,.ia-pensando span{animation:none}}
 @media (max-width:860px){ .ia-form{bottom:calc(76px + env(safe-area-inset-bottom))} .ia-q{max-width:90%} .ia-r{padding:12px 14px} }
+
+/* avatar */
+.av-saud{display:inline-grid;place-items:center;width:58px;height:58px;border-radius:50%;border:0;padding:0;margin:0 12px 0 0;vertical-align:-12px;background:transparent;cursor:pointer;box-shadow:0 4px 14px rgba(74,35,64,.15)}
+.av-saud svg{width:100%;height:100%;display:block}
+.av-saud.vazio{border:1.6px dashed var(--lilac);background:var(--card);color:var(--plum-2);box-shadow:none} .av-saud.vazio svg{width:22px;height:22px}
+.av-conta{width:64px;height:64px;border-radius:50%;border:0;padding:0;flex:0 0 64px;cursor:pointer;background:linear-gradient(135deg,var(--plum-3),var(--rose));color:#fff;font-family:"Cormorant Garamond",serif;font-size:30px;overflow:hidden}
+.av-conta svg{width:100%;height:100%;display:block}
+.av-ed{display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin:6px 0 14px}
+.av-prev{width:150px;height:150px;flex:0 0 150px;border-radius:50%;box-shadow:0 8px 24px rgba(74,35,64,.15)} .av-prev svg{width:100%;height:100%}
+.av-selfie{display:inline-flex;align-items:center;gap:8px} .av-priv{flex:1 1 220px;margin:0;font-size:12.5px}
+.av-abas{margin-bottom:10px}
+.av-campos{display:flex;flex-direction:column;gap:12px;max-height:46vh;overflow:auto;padding:2px}
+.av-campo>span{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
+.av-ops{display:flex;flex-wrap:wrap;gap:6px}
+.av-ops .chip{background:var(--card);border:1px solid var(--line);border-radius:99px;padding:6px 12px;font:inherit;font-size:13.5px;color:var(--plum-2);cursor:pointer}
+.av-ops .chip.on{background:var(--plum);border-color:var(--plum);color:#fff}
+.av-cor{width:34px;height:34px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px var(--line);cursor:pointer;padding:0}
+.av-cor.on{box-shadow:0 0 0 2.5px var(--plum)}
+.av-tog{justify-content:flex-start}
+.spin{width:14px;height:14px;border-radius:50%;border:2px solid currentColor;border-right-color:transparent;display:inline-block;animation:gira 0.8s linear infinite}
+@keyframes gira{to{transform:rotate(360deg)}}
+/* tutorial */
+#tut{display:none} #tut.show{display:block} #tut.oculto{display:none}
+.tut-fundo{position:fixed;inset:0;background:rgba(47,34,48,.42);backdrop-filter:blur(2px);z-index:120}
+.tut-card{position:fixed;z-index:121;left:50%;bottom:24px;transform:translateX(-50%);width:min(560px,calc(100% - 24px));display:flex;align-items:flex-end;animation:tutEntra .35s ease}
+@keyframes tutEntra{from{opacity:0;transform:translate(-50%,16px)}to{opacity:1;transform:translate(-50%,0)}}
+.tut-guia{position:relative;width:132px;flex:0 0 132px;margin-right:-14px;z-index:2}
+.tut-guia>svg{width:132px;height:132px;display:block;filter:drop-shadow(0 8px 18px rgba(74,35,64,.3))}
+.tut-halter{position:absolute;right:4px;top:4px;width:36px;height:36px;border-radius:50%;background:var(--plum);color:#fff;display:grid;place-items:center;animation:halter 1.6s ease-in-out infinite}
+.tut-halter svg{width:20px;height:20px;filter:none}
+@keyframes halter{0%,100%{transform:rotate(-12deg) translateY(0)}50%{transform:rotate(12deg) translateY(-5px)}}
+.tut-balao{flex:1;background:var(--card);border-radius:22px;padding:18px 20px 14px 30px;box-shadow:0 18px 44px rgba(47,34,48,.28)}
+.tut-balao h3{font-family:"Cormorant Garamond",serif;font-size:26px;color:var(--plum);margin:0 0 4px}
+.tut-balao p{margin:0;color:var(--ink);font-size:15px}
+.tut-pontos{display:flex;gap:5px;margin:12px 0 10px} .tut-pontos span{width:7px;height:7px;border-radius:50%;background:var(--line)} .tut-pontos span.on{background:var(--plum);width:18px;border-radius:9px}
+.tut-acoes{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.respira{animation:respira 3.4s ease-in-out infinite;transform-origin:100px 200px} @keyframes respira{0%,100%{transform:scaleY(1)}50%{transform:scaleY(1.015)}}
+@media (max-width:860px){ .tut-card{bottom:calc(84px + env(safe-area-inset-bottom));flex-direction:column;align-items:center} .tut-guia{margin:0 0 -26px;width:112px;flex-basis:auto} .tut-guia>svg{width:112px;height:112px} .tut-balao{padding:30px 18px 14px;width:100%} .av-saud{width:48px;height:48px;vertical-align:-8px;margin-right:10px} }
+@media (prefers-reduced-motion:reduce){.tut-halter,.respira,.tut-card{animation:none}}
 </style>
 </head>
 <body>
@@ -744,6 +783,121 @@ const BROTO = `<svg viewBox="0 0 120 80" fill="none" stroke="#a99ab6" stroke-wid
 const FOLHA = `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M32 58V26"/><path d="M32 40c-10-2-16-10-16-20 10 0 16 8 16 20zM32 34c8-2 14-8 14-18-8 0-14 6-14 18z"/></svg>`;
 
 // =================== ilustrações animadas por aba ===================
+// ===== avatar ilustrado (mesmo traço dos bichinhos do app) =====
+const AV = (() => {
+  const O = "#3d2a38";
+  const PELE = { "muito-clara": ["#f7e0cd", "#e9c4a8"], "clara": ["#f2d0b4", "#e0b292"], "media-clara": ["#e6b690", "#d09a75"], "media": ["#d49e76", "#bb815a"], "morena": ["#bb7f57", "#9f6642"], "morena-escura": ["#9c623e", "#7f4b2d"], "escura": ["#7c4c30", "#613923"], "muito-escura": ["#5c3724", "#452818"] };
+  const CABELO = { "preto": "#2b2126", "castanho-escuro": "#4a2f24", "castanho": "#6e4630", "castanho-claro": "#9b6b45", "loiro": "#ddb86c", "ruivo": "#b5562e", "grisalho": "#a9a3a1", "branco": "#ebe6e0", "lilas": "#b48ad6", "rosa": "#e59aae" };
+  const OLHOS = { "castanho": "#6b4430", "preto": "#2b2126", "verde": "#5e8a5a", "azul": "#5b86b5", "mel": "#a87a3c" };
+  const ROUPA = { "ameixa": "#6b3a5e", "rosa": "#e8a8b6", "lilas": "#b9a6cf", "bege": "#e2d3bd", "verde": "#8fb39a", "azul": "#8fa9cf", "preto": "#3a2f38", "branco": "#fbf8f3" };
+  const FUNDO = { "lilas": "#ebe5f0", "rosa": "#f6e7e9", "bege": "#f4eee5", "verde": "#e3efe6", "azul": "#e4ecf6", "amarelo": "#fbf0d2" };
+  const PADRAO = { pele: "media-clara", cabeloCor: "castanho", cabeloTipo: "ondulado", comprimento: "longo", penteado: "solto", franja: false, olhos: "castanho", oculos: false, barba: "nenhuma", rosto: "oval", sobrancelha: "media", cilios: true, roupa: "blusa", roupaCor: "ameixa", fundo: "lilas", acessorio: "nenhum" };
+  const escurece = (hex, f) => { const n = parseInt(hex.slice(1), 16); const c = [n >> 16, (n >> 8) & 255, n & 255].map(v => Math.max(0, Math.min(255, Math.round(v * f)))); return "#" + c.map(v => v.toString(16).padStart(2, "0")).join(""); };
+  const st = (w = 1.6) => `stroke="${O}" stroke-width="${w}" stroke-linejoin="round" stroke-linecap="round"`;
+  // contorno com ondas/cachos: recebe pontos e devolve círculos ao longo do caminho
+  function bolinhas(pts, r, cor, passo) {
+    let out = "";
+    for (let i = 0; i < pts.length - 1; i++) {
+      const [x1, y1] = pts[i], [x2, y2] = pts[i + 1]; const d = Math.hypot(x2 - x1, y2 - y1); const n = Math.max(1, Math.round(d / passo));
+      for (let k = 0; k < n; k++) { const t = k / n; out += `<circle cx="${(x1 + (x2 - x1) * t).toFixed(1)}" cy="${(y1 + (y2 - y1) * t).toFixed(1)}" r="${r}" fill="${cor}" ${st(1.4)}/>`; }
+    }
+    return out;
+  }
+  function rostoPath(tipo) {
+    switch (tipo) {
+      case "redondo": return "M100 55 C125 55 135 74 135 94 C135 116 120 130 100 130 C80 130 65 116 65 94 C65 74 75 55 100 55Z";
+      case "quadrado": return "M100 55 C124 55 133 70 133 90 C133 106 131 118 122 124 C114 129 107 130 100 130 C93 130 86 129 78 124 C69 118 67 106 67 90 C67 70 76 55 100 55Z";
+      case "coracao": return "M100 55 C126 55 134 72 134 90 C134 108 120 124 100 132 C80 124 66 108 66 90 C66 72 74 55 100 55Z";
+      case "alongado": return "M100 52 C123 52 131 70 131 92 C131 116 118 134 100 134 C82 134 69 116 69 92 C69 70 77 52 100 52Z";
+      default: return "M100 55 C124 55 133 72 133 92 C133 114 119 131 100 131 C81 131 67 114 67 92 C67 72 76 55 100 55Z";
+    }
+  }
+  function cabeloAtras(a, cor) {
+    const tipo = a.cabeloTipo, comp = a.comprimento, pent = a.penteado;
+    if (comp === "raspado") return "";
+    if (pent === "coque") return `<circle cx="100" cy="44" r="17" fill="${cor}" ${st()}/><path d="M90 40 q10 -8 20 0" fill="none" stroke="${escurece(cor, .75)}" stroke-width="1.6" stroke-linecap="round"/>`;
+    if (pent === "rabo") {
+      const forma = `M120 52 C150 38 166 74 156 116 C152 134 146 146 138 150 C140 128 142 98 132 74 Z`;
+      if (tipo === "cacheado" || tipo === "crespo") return `<path d="${forma}" fill="${cor}" ${st()}/>` + bolinhas([[128, 54], [152, 60], [160, 96], [150, 132], [140, 148]], 8, cor, 11);
+      return `<path d="${forma}" fill="${cor}" ${st()}/><path d="M138 70 q12 30 4 66" fill="none" stroke="${escurece(cor, .8)}" stroke-width="1.6" stroke-linecap="round"/>`;
+    }
+    if (pent === "tranca") {
+      let t = ""; for (let i = 0; i < 6; i++) { const y = 112 + i * 13, x = 70 - i * 1.2; t += `<ellipse cx="${x}" cy="${y}" rx="${9 - i * .5}" ry="8" fill="${cor}" ${st(1.4)}/>`; }
+      return `<path d="M64 84 C60 100 62 110 70 116 L82 104Z" fill="${cor}" ${st()}/>` + t;
+    }
+    if (tipo === "crespo") {
+      const R = comp === "curto" ? [40, 42, 86] : comp === "medio" ? [56, 50, 84] : [64, 58, 90];
+      const pts = []; for (let i = 0; i <= 26; i++) { const ang = Math.PI * (0.92 + i * (1.16 / 26)); pts.push([100 + Math.cos(ang) * R[0], R[2] + Math.sin(ang) * R[1]]); }
+      return `<ellipse cx="100" cy="${R[2]}" rx="${R[0]}" ry="${R[1]}" fill="${cor}"/>` + bolinhas(pts, 10, cor, 9) + `<ellipse cx="100" cy="${R[2]}" rx="${R[0] - 4}" ry="${R[1] - 4}" fill="${cor}"/>`;
+    }
+    if (comp === "curto") return "";
+    const fundo = comp === "longo"
+      ? "M64 78 C52 104 50 140 55 174 C57 186 66 192 77 190 C87 188 91 180 89 168 C87 156 88 146 92 138 L108 138 C112 146 113 156 111 168 C109 180 113 188 123 190 C134 192 143 186 145 174 C150 140 148 104 136 78 C126 58 74 58 64 78Z"
+      : "M63 80 C55 104 55 130 60 146 C63 155 72 158 80 154 C86 151 88 146 90 140 L110 140 C112 146 114 151 120 154 C128 158 137 155 140 146 C145 130 145 104 137 80 C127 60 73 60 63 80Z";
+    if (tipo === "cacheado") {
+      const base = `<path d="${fundo}" fill="${cor}"/>`;
+      const y2 = comp === "longo" ? 186 : 150;
+      return base + bolinhas([[66, 70], [58, 100], [57, 130], [60, y2 - 4], [80, y2]], 9, cor, 10) + bolinhas([[134, 70], [142, 100], [143, 130], [140, y2 - 4], [120, y2]], 9, cor, 10) + `<path d="${fundo}" fill="${cor}" transform="translate(100 120) scale(.9) translate(-100 -120)"/>`;
+    }
+    const ondas = tipo === "ondulado" ? `<path d="M66 110 q-6 10 0 20 q6 10 0 20 M134 110 q6 10 0 20 q-6 10 0 20" fill="none" stroke="${escurece(cor, .78)}" stroke-width="1.6" stroke-linecap="round"/>` : `<path d="M68 104 q-6 28 -4 ${comp === "longo" ? 62 : 36} M132 104 q6 28 4 ${comp === "longo" ? 62 : 36}" fill="none" stroke="${escurece(cor, .8)}" stroke-width="1.5" stroke-linecap="round" opacity=".8"/>`;
+    return `<path d="${fundo}" fill="${cor}" ${st()}/>` + ondas;
+  }
+  function cabeloFrente(a, cor) {
+    const tipo = a.cabeloTipo, comp = a.comprimento, preso = a.penteado !== "solto";
+    if (comp === "raspado") return `<path d="M68 92 C64 62 82 50 100 50 C118 50 136 62 132 92 C128 76 116 64 100 64 C84 64 72 76 68 92Z" fill="${cor}" opacity=".55"/>`;
+    const sombra = escurece(cor, .78);
+    if (tipo === "crespo" || tipo === "cacheado") {
+      const cap = `<path d="M66 98 C60 62 80 46 100 46 C120 46 140 62 134 98 C130 80 120 68 100 67 C80 68 70 80 66 98Z" fill="${cor}" ${st()}/>`;
+      const pts = [[67, 92], [68, 70], [82, 54], [100, 49], [118, 54], [132, 70], [133, 92]];
+      const franja = a.franja ? bolinhas([[78, 66], [90, 72], [100, 70], [110, 72], [122, 66]], 7, cor, 8) : bolinhas([[74, 70], [86, 64], [100, 62], [114, 64], [126, 70]], 5.5, cor, 9);
+      return cap + bolinhas(pts, tipo === "crespo" ? 8 : 9, cor, 10) + franja;
+    }
+    let cap = preso
+      ? `<path d="M66 100 C60 60 82 46 100 46 C122 46 140 60 134 100 C130 84 122 70 100 68 C80 70 70 84 66 100Z" fill="${cor}" ${st()}/><path d="M84 54 q16 -6 32 0" fill="none" stroke="${sombra}" stroke-width="1.6" stroke-linecap="round"/>`
+      : `<path d="M64 106 C58 60 82 44 102 45 C124 46 142 62 136 106 C133 86 126 74 112 67 C100 77 82 82 64 106Z" fill="${cor}" ${st()}/><path d="M112 67 q-2 -10 -12 -18" fill="none" stroke="${sombra}" stroke-width="1.6" stroke-linecap="round"/>`;
+    if (a.franja) cap += `<path d="M70 86 C70 66 84 56 100 56 C118 56 130 66 130 84 C122 76 116 74 108 78 C100 72 92 74 86 80 C80 76 74 80 70 86Z" fill="${cor}" ${st()}/>`;
+    if (tipo === "ondulado" && !preso) cap += `<path d="M68 96 q4 -8 0 -16 M132 96 q-4 -8 0 -16" fill="none" stroke="${sombra}" stroke-width="1.5" stroke-linecap="round"/>`;
+    return cap;
+  }
+  function roupaSVG(a, pele) {
+    const c = ROUPA[a.roupaCor] || ROUPA.ameixa, cs = escurece(c, .85);
+    const corpo = "M26 200 C28 166 58 150 100 150 C142 150 172 166 174 200Z";
+    if (a.roupa === "regata") return `<path d="${corpo}" fill="${pele[0]}" ${st()}/><path d="M60 200 C62 176 66 162 74 156 L82 156 C84 170 92 176 100 176 C108 176 116 170 118 156 L126 156 C134 162 138 176 140 200Z" fill="${c}" ${st()}/><path d="M72 156 l2 -6 M128 156 l-2 -6" stroke="${O}" stroke-width="1.4"/>`;
+    if (a.roupa === "gola-v") return `<path d="${corpo}" fill="${c}" ${st()}/><path d="M86 152 L100 176 L114 152" fill="${pele[0]}" ${st()}/>`;
+    return `<path d="${corpo}" fill="${c}" ${st()}/><path d="M84 151 C88 162 112 162 116 151" fill="${pele[0]}" ${st()}/><path d="M60 178 q2 10 0 22 M140 178 q-2 10 0 22" stroke="${cs}" stroke-width="1.5" fill="none"/>`;
+  }
+  function svg(entrada, opts = {}) {
+    const a = { ...PADRAO, ...(entrada || {}) };
+    const pele = PELE[a.pele] || PELE["media-clara"], cab = CABELO[a.cabeloCor] || CABELO.castanho, olho = OLHOS[a.olhos] || OLHOS.castanho;
+    const fundo = FUNDO[a.fundo] || FUNDO.lilas, id = "av" + Math.random().toString(36).slice(2, 8);
+    const sob = { fina: 1.4, media: 2.2, grossa: 3.2 }[a.sobrancelha] || 2.2, corSob = escurece(a.cabeloCor === "branco" || a.cabeloCor === "grisalho" ? "#8a7f7a" : cab, .8);
+    const olhoSVG = x => `<g class="${opts.anim ? "pisca" : ""}" style="transform-origin:${x}px 93px"><ellipse cx="${x}" cy="93" rx="4.6" ry="5.2" fill="${olho}"/><circle cx="${x}" cy="93.4" r="2.6" fill="${O}"/><circle cx="${x + 1.4}" cy="91.4" r="1.3" fill="#fff"/></g>` + (a.cilios ? `<path d="M${x - 5} 89 q5 -4 10 0" fill="none" stroke="${O}" stroke-width="1.6" stroke-linecap="round"/><path d="M${x + (x < 100 ? -5 : 5)} 89.5 l${x < 100 ? -3 : 3} -2.4" stroke="${O}" stroke-width="1.4" stroke-linecap="round"/>` : `<path d="M${x - 5} 89.5 q5 -3 10 0" fill="none" stroke="${O}" stroke-width="1.2" stroke-linecap="round" opacity=".6"/>`);
+    let barba = "";
+    if (a.barba === "curta") barba = `<path d="M70 104 C72 124 86 131 100 131 C114 131 128 124 130 104 C126 116 116 122 100 122 C84 122 74 116 70 104Z" fill="${cab}" opacity=".45"/><path d="M90 112 q10 -5 20 0" stroke="${cab}" stroke-width="3" fill="none" stroke-linecap="round" opacity=".55"/>`;
+    if (a.barba === "cheia") barba = `<path d="M68 98 C68 126 84 138 100 138 C116 138 132 126 132 98 C128 112 120 118 112 118 C108 112 92 112 88 118 C80 118 72 112 68 98Z" fill="${cab}" ${st()}/><path d="M92 113 q8 -4 16 0" stroke="${cab}" stroke-width="3.4" fill="none" stroke-linecap="round"/>`;
+    const oculos = a.oculos ? `<g fill="#fff" fill-opacity=".18" stroke="${O}" stroke-width="2"><rect x="76" y="84" width="21" height="17" rx="7"/><rect x="103" y="84" width="21" height="17" rx="7"/></g><path d="M97 91 q3 -2 6 0 M76 90 l-8 -2 M124 90 l8 -2" stroke="${O}" stroke-width="2" fill="none" stroke-linecap="round"/>` : "";
+    let acess = "";
+    if (a.acessorio === "brincos" || a.acessorio === "faixa-brincos") acess += `<circle cx="67" cy="108" r="3" fill="#e6b84a" ${st(1.2)}/><circle cx="133" cy="108" r="3" fill="#e6b84a" ${st(1.2)}/>`;
+    if (a.acessorio === "faixa" || a.acessorio === "faixa-brincos") acess += `<path d="M66 76 C74 60 88 54 100 54 C112 54 126 60 134 76 L131 83 C122 69 112 64 100 64 C88 64 78 69 69 83Z" fill="${a.roupaCor === "rosa" ? "#6b3a5e" : "#e8a8b6"}" ${st()}/>`;
+    if (a.acessorio === "laco") acess += `<g transform="translate(126 58) rotate(20)"><path d="M0 0 l-12 -8 v16z M0 0 l12 -8 v16z" fill="#e8a8b6" ${st(1.4)}/><circle r="3.4" fill="#c98b95" ${st(1.2)}/></g>`;
+    const orelhas = `<ellipse cx="68" cy="96" rx="6" ry="9" fill="${pele[0]}" ${st()}/><ellipse cx="132" cy="96" rx="6" ry="9" fill="${pele[0]}" ${st()}/><path d="M66 93 q3 3 0 7 M134 93 q-3 3 0 7" stroke="${pele[1]}" stroke-width="1.6" fill="none" stroke-linecap="round"/>`;
+    const corpo = `<g class="${opts.anim ? "respira" : ""}">${roupaSVG(a, pele)}</g>`;
+    const rosto = `<path d="M90 118 L90 154 L110 154 L110 118Z" fill="${pele[1]}" ${st()}/>${orelhas}<path d="${rostoPath(a.rosto)}" fill="${pele[0]}" ${st()}/>`;
+    const traços = `<path d="M${81} 81 q6 -${sob > 2 ? 4 : 3} 12 0 M107 81 q6 -${sob > 2 ? 4 : 3} 12 0" fill="none" stroke="${corSob}" stroke-width="${sob}" stroke-linecap="round"/>
+      ${olhoSVG(87)}${olhoSVG(113)}
+      <path d="M100 98 q-3 7 1 8" fill="none" stroke="${pele[1]}" stroke-width="2" stroke-linecap="round"/>
+      <ellipse cx="80" cy="106" rx="6" ry="3.4" fill="#f09aa6" opacity=".45"/><ellipse cx="120" cy="106" rx="6" ry="3.4" fill="#f09aa6" opacity=".45"/>
+      <path d="M91 112 q9 9 18 0 q-9 3 -18 0z" fill="#c9636f" ${st(1.4)}/>`;
+    const figura = `<g transform="translate(100 104) scale(1.16) translate(-100 -100)">${corpo}${cabeloAtras(a, cab)}${rosto}${traços}${barba}${cabeloFrente(a, cab)}${oculos}${acess}</g>`;
+    const conteudo = `<circle cx="100" cy="100" r="100" fill="${fundo}"/>${figura}`;
+    if (opts.semCirculo) return `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="${opts.cls || ""}" aria-hidden="true">${conteudo.replace(`<circle cx="100" cy="100" r="100" fill="${fundo}"/>`, "")}</svg>`;
+    return `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="${opts.cls || ""}" aria-hidden="true"><defs><clipPath id="${id}"><circle cx="100" cy="100" r="100"/></clipPath></defs><g clip-path="url(#${id})">${conteudo}</g></svg>`;
+  }
+  // a guia do tutorial: mulher de academia
+  const GUIA = { pele: "media", cabeloCor: "castanho-escuro", cabeloTipo: "ondulado", comprimento: "longo", penteado: "rabo", franja: false, olhos: "castanho", cilios: true, roupa: "regata", roupaCor: "ameixa", fundo: "rosa", acessorio: "faixa-brincos", sobrancelha: "media", rosto: "oval" };
+  return { svg, PADRAO, PELE, CABELO, OLHOS, ROUPA, FUNDO, GUIA };
+})();
+
 const ARTE = (() => {
   const O = "#3d2a38"; // contorno
   const st = `stroke="${O}" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"`;
@@ -920,7 +1074,8 @@ const val = id => { const el = document.getElementById(id); return el ? (el.valu
 const chk = id => { const el = document.getElementById(id); return !!(el && el.checked); };
 function toast(m) { const t = $("#toast"); t.textContent = m; t.classList.add("show"); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove("show"), 2600); }
 function abrir(html, lg) { $("#modal").className = "modal" + (lg ? " lg" : ""); $("#modal").innerHTML = html; $("#mbg").classList.add("show"); const f = $("#modal").querySelector("input[type=text],input:not([type]),textarea"); if (f && window.innerWidth > 860) setTimeout(() => f.focus(), 30); }
-function fechar() { cancelAnimationFrame(S && S.raf); S.modalFichaHTML = null; $("#mbg").classList.remove("show"); $("#modal").innerHTML = ""; }
+function fechar() {
+  if (S.tutDepoisAvatar && S.tutAberto) { S.tutDepoisAvatar = false; setTimeout(() => mostrarTutorial(TUT.length - 1), 50); } cancelAnimationFrame(S && S.raf); S.modalFichaHTML = null; $("#mbg").classList.remove("show"); $("#modal").innerHTML = ""; }
 function confirmar(txt, ok = "Confirmar") {
   return new Promise(r => { abrir(`<h2>Tem certeza?</h2><p>${esc(txt)}</p><div class="actions"><button class="btn ghost" id="cNo">Cancelar</button><button class="btn" id="cOk">${esc(ok)}</button></div>`);
     $("#cNo").onclick = () => { fechar(); r(false); }; $("#cOk").onclick = () => { fechar(); r(true); }; });
@@ -1080,6 +1235,7 @@ function render() {
   if (fId) { const el = document.getElementById(fId); if (el && el !== document.activeElement && !el.disabled) { try { el.focus({ preventScroll: true }); if (fIni != null && el.setSelectionRange) el.setSelectionRange(fIni, fFim); } catch {} } }
 }
 function renderTela() {
+  setTimeout(() => { if (S.base && document.querySelector("nav.menu")) talvezTutorial(); }, 0);
   if (READY.has("prefs") && !LOCAL) {
     if (!D.prefs.login || S.redefinir) { if (!$("#app").querySelector('[data-form="criarAcesso"]') || S.redefinirMudou) { S.redefinirMudou = false; $("#app").innerHTML = telaCriarAcesso(!!(D.prefs.login && S.redefinir)); } return; }
     if (!lerSessao()) { if (!$("#app").querySelector('[data-form="login"]')) $("#app").innerHTML = telaLogin(); return; }
@@ -1107,7 +1263,7 @@ VIEWS.inicio = () => {
   const pend = pendImportantes().slice(0, 5);
   const t = treinoDoDia();
   const dataLonga = new Date().toLocaleDateString("pt-BR", { weekday: "long", day: "numeric", month: "long" });
-  return ph(`${saud}.`, dataLonga.charAt(0).toUpperCase() + dataLonga.slice(1), "", true) + `
+  return ph(`${avatarSaud()}${saud}.`, dataLonga.charAt(0).toUpperCase() + dataLonga.slice(1), "", true) + `
   <div class="grid g4" style="margin-bottom:18px">
     <div class="kpi dark"><span>Saldo disponível</span><b>${brl(r.saldo)}</b><small>recebido menos pago em ${MESES[+mesAtual().slice(5)-1]}</small></div>
     <div class="kpi"><span>Entradas do mês</span><b>${brl0(r.entPrev)}</b><small>${brl0(r.entRec)} já recebido</small></div>
@@ -2311,9 +2467,10 @@ function contaLocal() {
   const instalada = window.matchMedia && matchMedia("(display-mode: standalone)").matches;
   return ph(S.owner ? "Conta mestre" : "Minha conta", S.owner ? "Sua conta de dona do app: crie e cuide das contas do em dia." : "Seu perfil, seu acesso e onde seus dados ficam.", "") + `
   <div class="grid g2">
-    <div class="card"><div class="row" style="align-items:center"><div class="avatar-ini">${esc((nome || "?").slice(0, 1).toUpperCase())}</div><div><div class="serif" style="font-size:26px;color:var(--plum)">${esc(nome || "Sem nome")}</div><div class="hint">${S.owner ? `<span class="tag lil">conta mestre</span> ` : ""}usuário: ${esc(c.usuario || "—")}</div></div></div>
+    <div class="card"><div class="row" style="align-items:center"><button class="av-conta ${temAvatar() ? "" : "vazio"}" data-act="avEditar" aria-label="Meu avatar">${temAvatar() ? avatarSVG() : esc((nome || "?").slice(0, 1).toUpperCase())}</button><div><div class="serif" style="font-size:26px;color:var(--plum)">${esc(nome || "Sem nome")}</div><div class="hint">${S.owner ? `<span class="tag lil">conta mestre</span> ` : ""}usuário: ${esc(c.usuario || "—")}</div></div></div>
       <label class="f" style="margin-top:16px">Como quer ser chamada<div class="row"><input type="text" id="contaNome" value="${esc(D.prefs.nome || "")}" maxlength="40"><button class="btn sec fx" data-act="salvarNome">Salvar</button></div></label>
-      <div class="actions" style="justify-content:flex-start"><button class="btn sec sm" data-act="lcTrocarSenha">Trocar usuário ou senha</button><button class="btn ghost sm" data-act="lcSair">Sair</button></div></div>
+      <div class="actions" style="justify-content:flex-start"><button class="btn sec sm" data-act="avEditar">${temAvatar() ? "Editar avatar" : "Criar meu avatar"}</button><button class="btn ghost sm" data-act="tutRever">Ver tutorial</button></div>
+      <div class="actions" style="justify-content:flex-start;margin-top:0"><button class="btn sec sm" data-act="lcTrocarSenha">Trocar usuário ou senha</button><button class="btn ghost sm" data-act="lcSair">Sair</button></div></div>
     <div class="card"><h3>Seus dados</h3>
       <div class="li" id="syncLi"><span class="dot" style="background:${sy.cor}"></span><div class="grow"><div class="t">${sy.t}</div><div class="s">${esc(sy.s)}</div></div><button class="btn ghost sm" data-act="lcSync">Sincronizar</button></div>
       <div class="li"><span class="dot" style="background:var(--lilac)"></span><div class="grow"><div class="t">Em qualquer aparelho</div><div class="s">${total} registro(s). Entre com seu usuário e senha no celular ou no computador: os dados são os mesmos.</div></div></div>
@@ -2405,6 +2562,103 @@ async function iaPerguntar(txt) {
   S.iaPend = null; render(); rolarIA();
 }
 
+// =================== AVATAR: editor e selfie ===================
+const temAvatar = () => !!(D.prefs && D.prefs.avatar);
+const avatarSVG = (cls = "") => AV.svg(D.prefs.avatar || {}, { cls });
+function avatarSaud() {
+  return `<button class="av-saud ${temAvatar() ? "" : "vazio"}" data-act="avEditar" aria-label="Meu avatar">${temAvatar() ? avatarSVG() : ic("plus")}</button>`;
+}
+const AV_ROT = {
+  pele: ["Pele", Object.keys(AV.PELE)], rosto: ["Rosto", ["oval", "redondo", "quadrado", "coracao", "alongado"]],
+  sobrancelha: ["Sobrancelha", ["fina", "media", "grossa"]], olhos: ["Olhos", Object.keys(AV.OLHOS)],
+  cabeloTipo: ["Tipo de cabelo", ["liso", "ondulado", "cacheado", "crespo"]], comprimento: ["Comprimento", ["raspado", "curto", "medio", "longo"]],
+  penteado: ["Penteado", ["solto", "rabo", "coque", "tranca"]], cabeloCor: ["Cor do cabelo", Object.keys(AV.CABELO)],
+  barba: ["Barba", ["nenhuma", "curta", "cheia"]], roupa: ["Roupa", ["blusa", "regata", "gola-v"]], roupaCor: ["Cor da roupa", Object.keys(AV.ROUPA)],
+  acessorio: ["Acessório", ["nenhum", "brincos", "faixa", "faixa-brincos", "laco"]], fundo: ["Fundo", Object.keys(AV.FUNDO)],
+};
+const AV_NOME = { "media-clara": "média clara", "media": "média", "morena-escura": "morena escura", "muito-clara": "muito clara", "muito-escura": "muito escura", "coracao": "coração", "tranca": "trança", "medio": "médio", "gola-v": "gola V", "faixa-brincos": "faixa + brincos", "laco": "laço", "castanho-escuro": "castanho escuro", "castanho-claro": "castanho claro", "lilas": "lilás" };
+const nomeOp = v => (AV_NOME[v] || v).replace(/^./, c => c.toUpperCase());
+const CORES_AV = { pele: k => AV.PELE[k][0], olhos: k => AV.OLHOS[k], cabeloCor: k => AV.CABELO[k], roupaCor: k => AV.ROUPA[k], fundo: k => AV.FUNDO[k] };
+const AV_ABAS = [["rosto", "Rosto", ["pele", "rosto", "olhos", "sobrancelha", "cilios", "oculos", "barba"]], ["cabelo", "Cabelo", ["cabeloTipo", "comprimento", "penteado", "franja", "cabeloCor"]], ["estilo", "Estilo", ["roupa", "roupaCor", "acessorio", "fundo"]]];
+function editorAvatar() {
+  const a = { ...AV.PADRAO, ...(S.avEd || {}) }; const aba = S.avAba || "rosto";
+  const campo = k => {
+    if (k === "cilios" || k === "oculos" || k === "franja") return `<label class="chk av-tog"><input type="checkbox" data-chg="avTog" data-k="${k}" ${a[k] ? "checked" : ""}> ${{ cilios: "Cílios marcados", oculos: "Óculos", franja: "Franja" }[k]}</label>`;
+    const [rot, ops] = AV_ROT[k]; const cor = CORES_AV[k];
+    return `<div class="av-campo"><span>${rot}</span><div class="av-ops ${cor ? "cores" : ""}">${ops.map(v => cor
+      ? `<button class="av-cor ${a[k] === v ? "on" : ""}" style="background:${cor(v)}" data-act="avSet" data-k="${k}" data-v="${v}" aria-label="${nomeOp(v)}" title="${nomeOp(v)}"></button>`
+      : `<button class="chip ${a[k] === v ? "on" : ""}" data-act="avSet" data-k="${k}" data-v="${v}">${nomeOp(v)}</button>`).join("")}</div></div>`;
+  };
+  return `<h2>Meu avatar</h2>
+    <div class="av-ed"><div class="av-prev">${AV.svg(a)}</div>
+      ${LOCAL ? `<button class="btn ${S.avLendo ? "" : "sec"} av-selfie" data-act="avSelfie" ${S.avLendo ? "disabled" : ""}>${S.avLendo ? `<span class="spin"></span>Lendo seus traços…` : `${ic("img")}Criar pela selfie`}</button>
+      <input type="file" id="avFoto" accept="image/*" capture="user" style="display:none">
+      <p class="hint av-priv">A foto vai para a IA só para ler os traços e não fica salva em lugar nenhum. Depois você ajusta tudo à mão.</p>` : ""}
+    </div>
+    <div class="subtabs av-abas">${AV_ABAS.map(([k, n]) => `<button data-act="avAba" data-v="${k}" class="${aba === k ? "on" : ""}">${n}</button>`).join("")}</div>
+    <div class="av-campos">${AV_ABAS.find(x => x[0] === aba)[2].map(campo).join("")}</div>
+    <div class="actions">${temAvatar() ? `<button class="btn ghost" data-act="avRemover">Remover</button>` : ""}<span class="sp"></span><button class="btn ghost" data-act="fechar">Cancelar</button><button class="btn" data-act="avSalvar">Salvar avatar</button></div>`;
+}
+function abrirEditorAvatar() { S.avEd = { ...(D.prefs.avatar || AV.PADRAO) }; S.avAba = "rosto"; abrir(editorAvatar(), true); }
+function redesenharEditor() { const m = $("#modal"); if (!m) return; const y = m.scrollTop; m.innerHTML = editorAvatar(); m.scrollTop = y; }
+function reduzirFoto(file, max = 640) {
+  return new Promise((ok, falha) => {
+    const img = new Image(), url = URL.createObjectURL(file);
+    img.onload = () => { const k = Math.min(1, max / Math.max(img.width, img.height)); const c = document.createElement("canvas"); c.width = Math.round(img.width * k); c.height = Math.round(img.height * k); c.getContext("2d").drawImage(img, 0, 0, c.width, c.height); URL.revokeObjectURL(url); ok(c.toDataURL("image/jpeg", .85)); };
+    img.onerror = () => { URL.revokeObjectURL(url); falha(new Error("Não consegui abrir essa foto.")); };
+    img.src = url;
+  });
+}
+async function avatarPelaSelfie(file) {
+  if (!navigator.onLine) return toast("Sem internet agora. A selfie precisa de conexão.");
+  S.avLendo = true; redesenharEditor();
+  try {
+    const imagem = await reduzirFoto(file);
+    const r = await EMDIA.apiConta("avatarAnalisar", { imagem });
+    S.avEd = { ...S.avEd, ...r.tracos }; toast("Pronto! Ajuste o que quiser ✿");
+  } catch (e) { toast(msgErro(e)); }
+  S.avLendo = false; redesenharEditor();
+}
+// =================== TUTORIAL DE PRIMEIRO ACESSO ===================
+const TUT = [
+  { tela: "inicio", t: "Oi! Eu sou a Lia ✿", d: "Sou sua parceira aqui no em dia. Em 1 minutinho te mostro tudo o que dá pra fazer." },
+  { tela: "inicio", t: "Seu dia num olhar", d: "No Início ficam o saldo do mês, as próximas contas, o treino do dia e as pendências importantes." },
+  { tela: "financas", t: "Finanças sem susto", d: "Registre entradas, gastos e cartões. As contas fixas se repetem sozinhas todo mês." },
+  { tela: "cofres", t: "Cofrinhos", d: "Crie metas, como viagem ou reserva, e acompanhe quanto já guardou de cada uma." },
+  { tela: "treinos", t: "Bora treinar 💪", d: "Monte suas fichas com os exercícios ilustrados, marque os dias de treino e acompanhe sua evolução." },
+  { tela: "saude", t: "Cuidando de você", d: "Água, alimentação, dores e ciclo: tudo anotado num lugar só." },
+  { tela: "pend", t: "Pendências e planos", d: "Anote o que precisa resolver e organize seus projetos e sonhos em Planos." },
+  { tela: "ia", t: "Pesquisa com IA", d: "Ficou com dúvida? Pergunte qualquer coisa: a IA pesquisa na internet e responde com as fontes.", soLocal: true },
+  { tela: "inicio", t: "Agora você!", d: "Que tal criar seu avatar? Pode ser por uma selfie ou montando do seu jeito.", avatar: true },
+  { tela: "inicio", t: "Tudo salvo ✿", d: "Seus dados ficam na sua conta e funcionam até sem internet. Dica: instale o app na tela inicial pelo menu do navegador. Bom uso!", fim: true },
+].filter(p => !p.soLocal || LOCAL);
+function tutorialHTML() {
+  const i = S.tutPasso || 0, p = TUT[i];
+  return `<div class="tut-fundo"></div><div class="tut-card" role="dialog" aria-label="Tutorial">
+    <div class="tut-guia">${AV.svg(AV.GUIA, { anim: true })}<div class="tut-halter">${ic("dumbbell")}</div></div>
+    <div class="tut-balao"><h3>${p.t}</h3><p>${p.d}</p>
+      <div class="tut-pontos">${TUT.map((_, k) => `<span class="${k === i ? "on" : ""}"></span>`).join("")}</div>
+      <div class="tut-acoes">${p.fim ? "" : `<button class="btn ghost sm" data-act="tutPular">Pular</button>`}<span class="sp"></span>
+        ${i > 0 ? `<button class="btn ghost sm" data-act="tutVoltar">Voltar</button>` : ""}
+        ${p.avatar ? `<button class="btn sec sm" data-act="tutProx">Depois</button><button class="btn sm" data-act="tutAvatar">Criar meu avatar</button>` : `<button class="btn sm" data-act="tutProx">${p.fim ? "Começar ✿" : i === 0 ? "Vamos lá" : "Próximo"}</button>`}</div></div></div>`;
+}
+function mostrarTutorial(inicio = 0) {
+  S.tutPasso = inicio; S.tutAberto = true;
+  let el = document.getElementById("tut"); if (!el) { el = document.createElement("div"); el.id = "tut"; document.body.appendChild(el); }
+  const p = TUT[S.tutPasso]; if (S.tela !== p.tela) { S.tela = p.tela; render(); }
+  el.innerHTML = tutorialHTML(); el.className = "show";
+}
+async function fecharTutorial() {
+  S.tutAberto = false; const el = document.getElementById("tut"); if (el) { el.className = ""; el.innerHTML = ""; }
+  S.tela = "inicio"; render(); window.scrollTo && window.scrollTo(0, 0);
+  if (!D.prefs.tutorial) { try { await salvarPrefs({ tutorial: Date.now() }); } catch {} }
+}
+function talvezTutorial() {
+  if (S.tutAberto || S.tutChecado || !READY.has("prefs")) return;
+  S.tutChecado = true;
+  if (!D.prefs.tutorial) setTimeout(() => mostrarTutorial(0), 600);
+}
+
 // =================== CONTA ===================
 const nomeUsuaria = () => D.prefs.nome || (S.me && S.me.name ? S.me.name.split(" ")[0] : "");
 function telaBoasVindas() {
@@ -2477,6 +2731,17 @@ const ACT = {
   mNovaConta: () => modalNovaContaLocal(),
   mCriarConta: () => criarContaPeloMestre(),
   instalarApp: () => instalarApp(),
+  avEditar: () => abrirEditorAvatar(),
+  avSet: el => { S.avEd = { ...S.avEd, [el.dataset.k]: el.dataset.v }; redesenharEditor(); },
+  avAba: el => { S.avAba = el.dataset.v; redesenharEditor(); },
+  avSelfie: () => { const i = $("#avFoto"); if (i) { i.value = ""; i.click(); } },
+  avSalvar: async () => { const av = { ...AV.PADRAO, ...S.avEd }; await salvarPrefs({ avatar: av }); D.prefs = { ...D.prefs, avatar: av }; fechar(); toast("Avatar salvo ✿"); render(); },
+  avRemover: async () => { const p = { ...D.prefs }; delete p.avatar; try { await S.base.set(p); D.prefs = p; } catch (e) { erro(e); } fechar(); render(); },
+  tutProx: () => { if (S.tutPasso >= TUT.length - 1) return fecharTutorial(); mostrarTutorial(S.tutPasso + 1); },
+  tutVoltar: () => mostrarTutorial(Math.max(0, S.tutPasso - 1)),
+  tutPular: () => fecharTutorial(),
+  tutAvatar: () => { const el = document.getElementById("tut"); if (el) el.className = "oculto"; S.tutDepoisAvatar = true; abrirEditorAvatar(); },
+  tutRever: () => mostrarTutorial(0),
   iaSug: el => iaPerguntar(el.dataset.v),
   iaCopiar: el => { const m = (D.ia || []).find(x => x.id === el.dataset.id); if (!m) return; try { navigator.clipboard.writeText(m.r); toast("Resposta copiada"); } catch { toast("Não foi possível copiar"); } },
   iaApagar: el => del("ia", el.dataset.id),
@@ -2627,6 +2892,7 @@ const ACT = {
 };
 Object.assign(ACT, ACT_SAUDE);
 const CHG = {
+  avTog: el => { S.avEd = { ...S.avEd, [el.dataset.k]: el.checked }; redesenharEditor(); },
   mCadastro: el => acaoMestre("mConfig", { cadastroAberto: el.checked }, el.checked ? "Cadastro aberto" : "Cadastro fechado"),
   filtroLanc: el => { S.filtroLanc = el.value; render(); },
   formaLanc: el => { const cart = el.value !== "conta"; const s = (id, v) => { const x = document.getElementById(id); if (x) x.style.display = v ? "" : "none"; }; s("wParc", cart && !document.querySelector('[data-act="salvarLanc"]').dataset.id); s("wVenc", !cart); s("wPago", !cart); },
@@ -2653,7 +2919,7 @@ document.addEventListener("click", e => {
   const fn = ACT[el.dataset.act]; if (fn) { e.preventDefault(); e.stopPropagation(); fn(el, e); }
 });
 document.addEventListener("submit", e => { const f = e.target.closest("[data-form]"); if (!f) return; e.preventDefault(); if (f.dataset.form === "login") entrar(); if (f.dataset.form === "criarAcesso") criarAcesso(); if (f.dataset.form === "lcCriar") lcCriar(); if (f.dataset.form === "lcEntrar") lcEntrar(); if (f.dataset.form === "lcRecuperar") lcRecuperar(); if (f.dataset.form === "iaPerguntar") iaPerguntar(); });
-document.addEventListener("change", e => { const el = e.target.closest("[data-chg]"); if (el && CHG[el.dataset.chg] && el.dataset.chg !== "exCampo") CHG[el.dataset.chg](el, e); });
+document.addEventListener("change", e => { if (e.target.id === "avFoto" && e.target.files[0]) { avatarPelaSelfie(e.target.files[0]); return; } const el = e.target.closest("[data-chg]"); if (el && CHG[el.dataset.chg] && el.dataset.chg !== "exCampo") CHG[el.dataset.chg](el, e); });
 document.addEventListener("input", e => { if (e.target.id === "iaTxt") S.iaRascunho = e.target.value; const el = e.target.closest('[data-chg="exCampo"]'); if (el) CHG.exCampo(el); const fm = e.target.closest('[data-chg="fichaMeta"]'); if (fm) CHG.fichaMeta(fm);
   if (e.target.id === "dInt") { const l = $("#dIntL"); if (l) l.textContent = e.target.value; }
   if (e.target.id === "comidaBusca") { S.comidaQ = e.target.value; const r = $("#comidaRes"); if (r) r.innerHTML = resultadosComida(); } const q = e.target.closest("#libBusca"); if (q) { S.libQ = q.value; render(); const i2 = $("#libBusca"); if (i2) { i2.focus(); i2.setSelectionRange(i2.value.length, i2.value.length); } }

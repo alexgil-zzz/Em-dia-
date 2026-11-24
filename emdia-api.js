@@ -130,6 +130,51 @@ async function perguntarGemini(contents) {
   throw new Erro(502, (ultimo && ultimo.status === 502 && ultimo.msg) || "Não foi possível falar com a IA agora. Tente de novo.");
 }
 
+// selfie -> traços do avatar (a foto não é guardada)
+const TRACOS = {
+  pele: ["muito-clara", "clara", "media-clara", "media", "morena", "morena-escura", "escura", "muito-escura"],
+  cabeloCor: ["preto", "castanho-escuro", "castanho", "castanho-claro", "loiro", "ruivo", "grisalho", "branco", "lilas", "rosa"],
+  cabeloTipo: ["liso", "ondulado", "cacheado", "crespo"],
+  comprimento: ["raspado", "curto", "medio", "longo"],
+  penteado: ["solto", "rabo", "coque", "tranca"],
+  olhos: ["castanho", "preto", "verde", "azul", "mel"],
+  barba: ["nenhuma", "curta", "cheia"],
+  rosto: ["oval", "redondo", "quadrado", "coracao", "alongado"],
+  sobrancelha: ["fina", "media", "grossa"],
+};
+async function analisarSelfie(base64, mime) {
+  const props = {}; for (const [k, v] of Object.entries(TRACOS)) props[k] = { type: "STRING", enum: v };
+  Object.assign(props, { franja: { type: "BOOLEAN" }, oculos: { type: "BOOLEAN" }, cilios: { type: "BOOLEAN" }, brincos: { type: "BOOLEAN" }, temRosto: { type: "BOOLEAN" } });
+  const body = {
+    contents: [{ role: "user", parts: [
+      { inline_data: { mime_type: mime, data: base64 } },
+      { text: "Descreva os traços visíveis da pessoa desta selfie para montar um avatar ilustrado. Escolha a opção mais próxima em cada campo. 'cilios' = cílios marcados ou maquiagem nos olhos. 'temRosto' = false se não houver um rosto humano nítido na foto. Não identifique a pessoa." },
+    ] }],
+    generationConfig: { temperature: 0.2, responseMimeType: "application/json", responseSchema: { type: "OBJECT", properties: props, required: Object.keys(props) } },
+  };
+  const modelos = [...new Set([process.env.GEMINI_MODEL, "gemini-2.5-flash", "gemini-flash-latest", "gemini-2.0-flash"].filter(Boolean))];
+  let ultimo = null;
+  for (const m of modelos) {
+    const r = await fetch(`${process.env.GEMINI_BASE || "https://generativelanguage.googleapis.com"}/v1beta/models/${m}:generateContent`, { method: "POST", headers: { "Content-Type": "application/json", "x-goog-api-key": process.env.GEMINI_API_KEY }, body: JSON.stringify(body) });
+    let j = {}; try { j = await r.json(); } catch {}
+    if (r.status === 200) {
+      const txt = (((((j.candidates || [])[0] || {}).content || {}).parts || [])[0] || {}).text || "";
+      let t; try { t = JSON.parse(txt); } catch { throw new Erro(502, "A IA não conseguiu ler a foto. Tente outra."); }
+      if (t.temRosto === false) throw new Erro(400, "Não encontrei um rosto na foto. Tente uma selfie de frente, com boa luz.");
+      const out = {};
+      for (const [k, v] of Object.entries(TRACOS)) if (v.includes(t[k])) out[k] = t[k];
+      for (const k of ["franja", "oculos", "cilios"]) if (typeof t[k] === "boolean") out[k] = t[k];
+      if (t.brincos) out.acessorio = "brincos";
+      return out;
+    }
+    if (r.status === 429) throw new Erro(429, "A cota grátis do Gemini acabou por agora. Tente de novo daqui a pouco.");
+    ultimo = { status: r.status, msg: (j.error || {}).message };
+    if (r.status !== 404) break;
+  }
+  console.error("gemini avatar", ultimo);
+  throw new Erro(502, "Não foi possível analisar a foto agora. Tente de novo.");
+}
+
 const ACOES = {
   async status() {
     const [m, cfg] = await Promise.all([redis(["GET", K.mestre]), lerConfig()]);
@@ -233,6 +278,17 @@ const ACOES = {
     contents.push({ role: "user", parts: [{ text: pergunta }] });
     const r = await perguntarGemini(contents);
     return { resposta: r.texto, fontes: r.fontes, restantes: Math.max(0, LIMITE_IA - n) };
+  },
+  async avatarAnalisar(b) {
+    const c = await autenticar(b.token);
+    if (!process.env.GEMINI_API_KEY) throw new Erro(500, "A chave do Gemini ainda não foi colocada na Vercel (variável GEMINI_API_KEY).");
+    const m = String(b.imagem || "").match(/^data:(image\/(?:jpeg|png|webp));base64,([A-Za-z0-9+/=]+)$/);
+    if (!m) throw new Erro(400, "Foto inválida.");
+    if (m[2].length > 2_800_000) throw new Erro(400, "Foto grande demais.");
+    const kDia = P + "av:" + c.id + ":" + new Date().toISOString().slice(0, 10);
+    const n = await redis(["INCR", kDia]); if (n === 1) await redis(["EXPIRE", kDia, 172800]);
+    if (n > 10) throw new Erro(429, "Você já criou avatares pela foto 10 vezes hoje. Amanhã libera de novo, ou ajuste à mão.");
+    return { tracos: await analisarSelfie(m[2], m[1]) };
   },
   // ---------- conta mestre ----------
   async mListar(b) {

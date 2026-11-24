@@ -1,5 +1,5 @@
 /* em dia. — service worker: guarda o app inteiro no aparelho para abrir sem internet */
-const VERSAO = "emdia-10772b65a3";
+const VERSAO = "emdia-81735a7453";
 const ARQUIVOS = ["./", "index.html", "local.js", "exercicios.js", "manifest.webmanifest", "icon-192.png", "icon-512.png", "maskable-512.png", "apple-touch-icon.png"];
 const FONTES = "emdia-fontes";
 self.addEventListener("install", e => {
